@@ -5695,6 +5695,14 @@ TClass(wxWizardPageSimple) wxWizardPageSimple_GetPrev( TSelf(wxWizardPageSimple)
 void       wxWizardPageSimple_SetNext( TSelf(wxWizardPageSimple) _obj, TClass(wxWizardPageSimple) next );
 void       wxWizardPageSimple_SetPrev( TSelf(wxWizardPageSimple) _obj, TClass(wxWizardPageSimple) prev );
 
+#if (wxVERSION_NUMBER >= 2900)
+/* wxWrapSizer */
+TClassDefExtend(wxWrapSizer,wxBoxSizer)
+TClass(wxSize) wxWrapSizer_CalcMin( TSelf(wxWrapSizer) _obj );
+TClass(wxWrapSizer) wxWrapSizer_Create( int orient, int flags );
+void       wxWrapSizer_RecalcSizes( TSelf(wxWrapSizer) _obj );
+#endif
+
 /* wxXmlResource */
 TClassDefExtend(wxXmlResource,wxObject)
 void       wxXmlResource_AddHandler( TSelf(wxXmlResource) _obj, TClass(wxEvtHandler) handler );

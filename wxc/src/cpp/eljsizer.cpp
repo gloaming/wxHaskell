@@ -664,4 +664,23 @@ EWXWEXPORT(void*,wxNotebookSizer_GetNotebook)(wxNotebookSizer* self)
 }
 #endif
 
+#if (wxVERSION_NUMBER >= 2900)
+EWXWEXPORT(void*,wxWrapSizer_Create)(int orient, int flags)
+{
+	return (void*)new wxWrapSizer(orient, flags);
+}
+
+EWXWEXPORT(void,wxWrapSizer_RecalcSizes)(wxWrapSizer* self)
+{
+	self->RecalcSizes();
+}
+
+EWXWEXPORT(wxSize*,wxWrapSizer_CalcMin)(wxWrapSizer* self)
+{
+	wxSize* sz = new wxSize();
+	*sz = self->CalcMin();
+	return sz;
+}
+#endif
+
 }

@@ -37,6 +37,9 @@ typedef int intptr_t;
 #include "wx/imaglist.h"
 #include "wx/listctrl.h"
 #include "wx/splitter.h"
+#if (wxVERSION_NUMBER >= 2900)
+#include "wx/wrapsizer.h"
+#endif
 #include "wx/image.h"
 #include "wx/clipbrd.h"
 #include "wx/colordlg.h"
