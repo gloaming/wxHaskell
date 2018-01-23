@@ -570,13 +570,13 @@ valignCentre layout
   = updateOptions layout (\options' -> options'{ alignV = AlignVCentre })
 
 
+{-# DEPRECATED dynamic "Dynamic (wxADJUST_MINSIZE) is the default since wxWidgets 2.5.2" #-}
 -- | Adjust the minimal size of a control dynamically when the content changes.
 -- This is used for example to correctly layout static text or buttons when the
 -- text or label changes at runtime. This property is automatically set for
 -- 'StaticText', 'label's, and 'button's.
 dynamic :: Layout -> Layout
-dynamic layout
-  = updateOptions layout (\options' -> options'{ adjustMinSize = True })
+dynamic = id
 
 updateOptions :: Layout -> (LayoutOptions -> LayoutOptions) -> Layout
 updateOptions layout f
@@ -591,7 +591,7 @@ updateOptions layout f
 boxed :: String -> Layout -> Layout
 boxed txt' content'
   = TextBox optionsDefault{ stretchV = hasvstretch, stretchH = hashstretch
-                          , fillMode = hasfill, adjustMinSize = True }
+                          , fillMode = hasfill }
       txt' (extramargin content')
   where
     hasvstretch  = stretchV (options content')
@@ -638,10 +638,7 @@ container window layout
 -- | (primitive) Lift a basic control to a 'Layout'.
 layoutFromWindow :: Window a -> Layout
 layoutFromWindow window
-  = Widget optionsDefault{ adjustMinSize = adjust } (downcastWindow window)
-  where
-    adjust  =  instanceOf window classButton 
-            || instanceOf window classStaticText
+  = Widget optionsDefault (downcastWindow window)
 
 
 -- | (primitive) Empty layout with a given width and height.
@@ -720,7 +717,7 @@ split splitHorizontal' splitter' sashWidth' paneWidth' pane1' pane2'
 
 optionsDefault :: LayoutOptions
 optionsDefault
-  = LayoutOptions False False [] 10 AlignLeft AlignTop FillNone Nothing False
+  = LayoutOptions False False [] 10 AlignLeft AlignTop FillNone Nothing
 
 
 
@@ -749,7 +746,6 @@ data LayoutOptions
                           , alignH :: HAlign, alignV :: VAlign
                           , fillMode :: FillMode
                           , minSize  :: Maybe Size
-                          , adjustMinSize :: Bool
                           }
 
 data FillMode = FillNone | FillShaped | Fill
@@ -767,7 +763,6 @@ nullLayoutOptions =
     AlignHCentre AlignVCentre
     FillNone
     Nothing
-    False
 
 -- This is just to remove "Defined but not used" warnings:
 nullLayout :: Layout
@@ -856,7 +851,7 @@ sizerFromLayout parent layout
   where
     insert :: Sizer () -> Layout -> IO (Sizer ())
     insert container' (Spacer options' sz')
-      = do sizerAddWithOptions 0 (sizerAdd container' sz') (\_sz -> return ()) options'
+      = do sizerAddWithOptions (sizerAdd container' sz') (\_sz -> return ()) options'
            return container'
 
     insert container' (Widget options' win')
@@ -998,17 +993,16 @@ sizerFromLayout parent layout
 
     sizerAddWindowWithOptions :: Sizer a -> Window b -> LayoutOptions -> IO ()
     sizerAddWindowWithOptions container' window options'
-      = sizerAddWithOptions (flagsAdjustMinSize window options') 
-                            (sizerAddWindow container' window) (sizerSetItemMinSizeWindow container' window) options'
+      = sizerAddWithOptions (sizerAddWindow container' window) (sizerSetItemMinSizeWindow container' window) options'
 
     sizerAddSizerWithOptions :: Sizer a -> Sizer b -> LayoutOptions -> IO ()
     sizerAddSizerWithOptions container' sizer' options'
-      = sizerAddWithOptions 0 (sizerAddSizer container' sizer') (sizerSetItemMinSizeSizer container' sizer') options'
+      = sizerAddWithOptions (sizerAddSizer container' sizer') (sizerSetItemMinSizeSizer container' sizer') options'
            
 
-    sizerAddWithOptions :: Int -> (Int -> Int -> Int -> Ptr p -> IO ()) -> (Size -> IO ()) -> LayoutOptions -> IO ()
-    sizerAddWithOptions miscflags addSizer setMinSize options'
-      = do addSizer 1 (flags options' .+. miscflags) (marginW options') ptrNull
+    sizerAddWithOptions :: (Int -> Int -> Int -> Ptr p -> IO ()) -> (Size -> IO ()) -> LayoutOptions -> IO ()
+    sizerAddWithOptions addSizer setMinSize options'
+      = do addSizer 1 (flags options') (marginW options') ptrNull
            case minSize options' of
              Nothing -> return ()
              Just sz' -> setMinSize sz'
@@ -1044,23 +1038,3 @@ sizerFromLayout parent layout
           MarginLeft   -> wxLEFT
           MarginBottom -> wxBOTTOM
           MarginRight  -> wxRIGHT
- 
---  wxADJUST_MINSIZE is deprecated 
-    flagsAdjustMinSize _window _options = 0
-{-
-      = if (adjustMinSize options) 
-         then wxADJUST_MINSIZE
-         else 0
--}
-
-{-      
-        case minSize options of
-          Nothing | -- dleijen: unfortunately, wxADJUST_MINSIZE has bugs for certain controls:
-                    not ( instanceOf window classGauge || instanceOf window classGauge95 
-                         || instanceOf window classGaugeMSW 
-                         || instanceOf window classSlider || instanceOf window classSlider95 
-                         || instanceOf window classSliderMSW 
-                        )
-                  -> wxADJUST_MINSIZE
-          other   -> 0
--}
