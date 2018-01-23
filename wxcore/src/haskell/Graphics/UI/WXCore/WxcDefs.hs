@@ -412,6 +412,7 @@ module Graphics.UI.WXCore.WxcDefs
     , wxEXEC_NOHIDE
     , wxEXEC_SYNC
     , wxEXPAND
+    , wxEXTEND_LAST_ON_EACH_LINE
     , wxFDIAGONAL_HATCH
     , wxFILE_MUST_EXIST
     , wxFILTER_ALPHA
@@ -1269,6 +1270,7 @@ module Graphics.UI.WXCore.WxcDefs
     , wxRELATIONSHIP_RIGHTOF
     , wxRELATIONSHIP_SAMEAS
     , wxRELATIONSHIP_UNCONSTRAINED
+    , wxREMOVE_LEADING_SPACES
     , wxRESERVE_SPACE_EVEN_IF_HIDDEN
     , wxRESET
     , wxRESIZE_BORDER
@@ -2840,6 +2842,7 @@ module Graphics.UI.WXCore.WxcDefs
     , wxWINDOWS
     , wxWINDOWS_NT
     , wxWINDOWS_OS2
+    , wxWRAPSIZER_DEFAULT_FLAGS
     , wxWS_EX_VALIDATE_RECURSIVELY
     , wxXOR
     , wxXRC_NONE
@@ -11484,3 +11487,19 @@ wxSPLASH_TIMEOUT = 4
 wxSPLASH_NO_TIMEOUT :: Int
 wxSPLASH_NO_TIMEOUT = 0
 -}
+
+-- from wx/wrapsizer.h
+-- flags for wxWrapSizer
+
+wxEXTEND_LAST_ON_EACH_LINE :: Int
+wxEXTEND_LAST_ON_EACH_LINE = 1
+
+wxREMOVE_LEADING_SPACES :: Int
+wxREMOVE_LEADING_SPACES = 2
+
+wxWRAPSIZER_DEFAULT_FLAGS :: Int
+wxWRAPSIZER_DEFAULT_FLAGS =
+  wxEXTEND_LAST_ON_EACH_LINE .|.
+  wxREMOVE_LEADING_SPACES
+
+-- end from wx/wrapsizer.h
