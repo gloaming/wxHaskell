@@ -642,7 +642,7 @@ ldconfig path = case buildOS of
     OSX     -> return ()
     _       ->
           do
-            ld_exit_code <- system ("/sbin/ldconfig -n " ++ path)
+            ld_exit_code <- system ("ldconfig -n " ++ path)
             case ld_exit_code of
                 ExitSuccess -> return ()
                 otherwise -> error "Couldn't execute ldconfig, ensure it is on your path"
