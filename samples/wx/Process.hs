@@ -35,7 +35,7 @@ gui
            if (pid /= 0)
             then do message ("-- start process: '" ++ txt ++ "' --\n")
                     set input [on command := sendCommand input sendLn]
-                    set stop_  [enabled := True, on command  := unitIO (kill pid wxSIGKILL)]
+                    set stop_  [enabled := True, on command  := void (kill pid wxSIGKILL)]
             else return ()
 
     sendCommand input send

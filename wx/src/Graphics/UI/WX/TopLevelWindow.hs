@@ -67,7 +67,7 @@ instance Form (Frame a) where
 -- Default window close
 instance Closeable (Frame a) where
   close f
-    = unitIO (windowClose f True {- force? -})
+    = void (windowClose f True {- force? -})
 
 {--------------------------------------------------------------------------
   Framed instances

@@ -90,7 +90,7 @@ module Graphics.UI.WX.Types
     , rectMove, rectOverlaps, rectsDiff, rectUnion, rectOverlap, rectUnions
 
     -- * IO Control
-    , unitIO, bracket, bracket_, finally, finalize, when
+    , bracket, bracket_, finally, finalize, void, when
 
     ) where
 

@@ -58,4 +58,4 @@ import Graphics.UI.WXCore
 -- | 'start' runs the GUI.
 start :: IO a -> IO ()
 start io
-  = run (unitIO io)
+  = run (void io)

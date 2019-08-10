@@ -267,7 +267,7 @@ confirmDialog  parent caption msg yesDefault
 --
 warningDialog :: Window a -> String -> String -> IO ()
 warningDialog  parent caption msg
-  = unitIO (messageDialog parent caption msg (wxOK .+. wxICON_EXCLAMATION))
+  = void (messageDialog parent caption msg (wxOK .+. wxICON_EXCLAMATION))
 
 -- | An error dialog with a single /Ok/ button.
 --
@@ -275,7 +275,7 @@ warningDialog  parent caption msg
 --
 errorDialog :: Window a -> String -> String -> IO ()
 errorDialog parent caption msg
-  = unitIO (messageDialog parent caption msg (wxOK .+. wxICON_HAND))
+  = void (messageDialog parent caption msg (wxOK .+. wxICON_HAND))
 
 -- | An information dialog with a single /Ok/ button.
 --
@@ -283,7 +283,7 @@ errorDialog parent caption msg
 --
 infoDialog :: Window a -> String -> String -> IO ()
 infoDialog parent caption msg
-  = unitIO (messageDialog parent caption msg (wxOK .+. wxICON_INFORMATION))
+  = void (messageDialog parent caption msg (wxOK .+. wxICON_INFORMATION))
 
 -- | A primitive message dialog, specify icons and buttons.
 --

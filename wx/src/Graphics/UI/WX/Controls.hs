@@ -1453,8 +1453,8 @@ mediaCtrlEx parent style_ back props
        return s
 
 instance Media (MediaCtrl a) where
-  play media = unitIO (mediaCtrlPlay media)
-  stop media = unitIO (mediaCtrlStop media)
+  play media = void (mediaCtrlPlay media)
+  stop media = void (mediaCtrlStop media)
 
 {--------------------------------------------------------------------------------
   Wizard

@@ -35,7 +35,7 @@ module Graphics.UI.WXCore.Types(
             , bitsSet
 
             -- * Control
-            , unitIO, bracket, bracket_, finally, finalize, when
+            , bracket, bracket_, finally, finalize, void, when
 
             -- * Variables
             , Var, varCreate, varGet, varSet, varUpdate, varSwap
@@ -90,7 +90,7 @@ import System.IO.Unsafe( unsafePerformIO )
 import Data.Bits
 import Control.Concurrent.STM
 import Control.Exception( bracket, bracket_, finally )
-import Control.Monad( when )
+import Control.Monad( void, when )
 
 
 infixl 5 .+.
@@ -155,11 +155,6 @@ idCreate
 {--------------------------------------------------------------------------------
   Control
 --------------------------------------------------------------------------------}
--- | Ignore the result of an 'IO' action.
-unitIO :: IO a -> IO ()
-unitIO io
-  = io >> return ()
-
 -- | Run some computation afterwards, even if an exception occurs. Equals 'finally' but
 -- with the arguments swapped.
 finalize ::  IO b -- ^ computation to run last (release resource)

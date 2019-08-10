@@ -117,8 +117,8 @@ instance Able (Window a) where
     = newAttr "enabled" windowIsEnabled setter
     where
       setter w enable
-        | enable    = unitIO $ windowEnable w
-        | otherwise = unitIO $ windowDisable w
+        | enable    = void $ windowEnable w
+        | otherwise = void $ windowDisable w
 
 
 instance Textual (Window a) where
@@ -285,7 +285,7 @@ instance Visible (Window a) where
       setVisible w vis
         = if vis
            then do{ _ <- windowShow w; windowRaise w }
-           else unitIO (windowHide w)
+           else void (windowHide w)
 
   refresh w
     = windowRefresh w True

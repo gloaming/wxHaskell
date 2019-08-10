@@ -91,16 +91,16 @@ sound fname
   = unsafePerformIO $ soundCreate fname False
 
 instance Media (Sound a) where
-  play sound' = unitIO (soundPlay sound' wxSOUND_ASYNC)
+  play sound' = void (soundPlay sound' wxSOUND_ASYNC)
   stop = soundStop
 
 -- | Play a sound fragment repeatedly (and asynchronously).
 playLoop :: Sound a -> IO ()
 playLoop sound'
-  = unitIO (soundPlay sound' $ wxSOUND_ASYNC .+. wxSOUND_LOOP)
+  = void (soundPlay sound' $ wxSOUND_ASYNC .+. wxSOUND_LOOP)
 
 -- | Play a sound fragment synchronously (i.e. wait till completion).
 playWait :: Sound a -> IO ()
 playWait sound'
-  = unitIO (soundPlay sound' wxSOUND_SYNC)
+  = void (soundPlay sound' wxSOUND_SYNC)
 
