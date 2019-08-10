@@ -89,8 +89,8 @@ import System.IO.Unsafe( unsafePerformIO )
 -- utility
 import Data.Bits
 import Control.Concurrent.STM
-import qualified Control.Exception as CE
-import qualified Control.Monad as M
+import Control.Exception( bracket, bracket_, finally )
+import Control.Monad( when )
 
 
 infixl 5 .+.
@@ -159,30 +159,6 @@ idCreate
 unitIO :: IO a -> IO ()
 unitIO io
   = io >> return ()
-
--- | Perform an action when a test succeeds.
-when :: Bool -> IO () -> IO ()
-when = M.when
-
--- | Properly release resources, even in the event of an exception.
-bracket :: IO a           -- ^ computation to run first (acquire resource)
-           -> (a -> IO b) -- ^ computation to run last (release resource)
-           -> (a -> IO c) -- ^ computation to run in-between (use resource)
-           -> IO c
-bracket = CE.bracket
-
--- | Specialized variant of 'bracket' where the return value is not required.
-bracket_ :: IO a     -- ^ computation to run first (acquire resource)
-           -> IO b   -- ^ computation to run last (release resource)
-           -> IO c   -- ^ computation to run in-between (use resource)
-           -> IO c
-bracket_ = CE.bracket_
-
--- | Run some computation afterwards, even if an exception occurs.
-finally :: IO a -- ^ computation to run first
-        -> IO b -- ^ computation to run last (release resource)
-        -> IO a
-finally = CE.finally
 
 -- | Run some computation afterwards, even if an exception occurs. Equals 'finally' but
 -- with the arguments swapped.
